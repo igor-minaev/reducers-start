@@ -2,7 +2,8 @@ import React, {useReducer, useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddTaskAC, RemoveTaskAC, tasksReducer} from "./reducers/tasksReducer";
+import {addTaskAC, removeTaskAC, tasksReducer} from "./reducers/tasksReducer";
+import {changeFilterAC, filterReducer} from "./reducers/filterReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -24,20 +25,22 @@ function App() {
         {id: v1(), title: "GraphQL", isDone: false},
     ])
 
+    const [filter, dispatchFilter] = useReducer(filterReducer, 'all')
+
     function removeTask(id: string) {
         // let filteredTasks = tasks.filter(t => t.id != id);
         // setTasks(filteredTasks);
-        dispatchTasks(RemoveTaskAC(id))
+        dispatchTasks(removeTaskAC(id))
     }
 
     function addTask(title: string) {
         // let task = {id: v1(), title: title, isDone: false};
         // let newTasks = [task, ...tasks];
         // setTasks(newTasks);
-        dispatchTasks(AddTaskAC(title))
+        dispatchTasks(addTaskAC(title))
     }
 
-    let [filter, setFilter] = useState<FilterValuesType>("all");
+    // let [filter, setFilter] = useState<FilterValuesType>("all");
 
     let tasksForTodolist = tasks;
 
@@ -49,7 +52,8 @@ function App() {
     }
 
     function changeFilter(value: FilterValuesType) {
-        setFilter(value);
+        // setFilter(value);
+        dispatchFilter(changeFilterAC(value))
     }
 
 
